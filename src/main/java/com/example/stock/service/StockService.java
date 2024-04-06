@@ -13,8 +13,19 @@ public class StockService {
         this.stockRepository = stockRepository;
     }
 
-    @Transactional
-    public void decrease(Long id, Long quantity) {
+    /* NOTE
+    *   synchronized 를 사용하더라도 @Transactional 어노테이션으로 인해 실패
+    *   ------------------
+    *   -- proxy method --
+    *   start traction
+    *   call decrease
+    *   end transaction
+    *   --    end       --
+    *   ------------------
+    *   decrease 작업이 끝나고 end transaction 전에(commit X) 새로운 thread 가 작업하는 상황 발생
+    *   */
+//    @Transactional
+    public synchronized void decrease(Long id, Long quantity) {
         //1단계
         //Stock 조회
         //재고 감소
