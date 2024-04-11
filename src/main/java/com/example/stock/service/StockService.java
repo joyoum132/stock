@@ -2,8 +2,9 @@ package com.example.stock.service;
 
 import com.example.stock.domain.Stock;
 import com.example.stock.repository.StockRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class StockService {
@@ -24,8 +25,8 @@ public class StockService {
     *   ------------------
     *   decrease 작업이 끝나고 end transaction 전에(commit X) 새로운 thread 가 작업하는 상황 발생
     *   */
-//    @Transactional
-    public synchronized void decrease(Long id, Long quantity) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void decrease(Long id, Long quantity) {
         //1단계
         //Stock 조회
         //재고 감소
