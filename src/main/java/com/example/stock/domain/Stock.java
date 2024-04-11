@@ -14,6 +14,10 @@ public class Stock {
 
     private Long quantity;
 
+    public Long getId() {
+        return Id;
+    }
+
     public Stock() {
     }
 

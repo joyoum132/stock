@@ -22,6 +22,9 @@ class StockServiceTest {
     @Autowired
     private StockService stockService;
 
+    @Autowired
+    private PessimisticLockStockService pessimisticLockStockService;
+
     @BeforeEach
     public void before() {
         stockRepository.save(
@@ -50,7 +53,7 @@ class StockServiceTest {
         for(int i=0; i<threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    stockService.decrease(1L, 1L);
+                    pessimisticLockStockService.decrease(1L, 1L);
                 } finally {
                     countDownLatch.countDown();
                 }
